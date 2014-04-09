@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+  head
+    script(src="http://code.jquery.com/jquery-1.11.0.min.js")
+    script.
+      $(function(){
+        $.ajax({
+          type: 'POST',
+          url: '/fbtoken',
+          data: {
+            hash : window.location.hash.substring(1)
+          }
+        });
+      });
+      
