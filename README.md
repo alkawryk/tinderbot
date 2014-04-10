@@ -15,13 +15,13 @@
     var _ = require('underscore')
     
     bot.mainLoop = function() {
-      client.getRecommendations(10, function(error, data){
+      bot.client.getRecommendations(10, function(error, data){
         _.chain(data.results)
           .pluck('_id')
           .each(function(id) {
-            client.like(id, function(error, data) {
+            bot.client.like(id, function(error, data) {
               if (data.matched) {
-                client.sendMessage(
+                bot.client.sendMessage(
                   id,
                   "Hey, I'm playing this cool new game Castle Clash. Have you heard of it?"
                 );
@@ -77,13 +77,17 @@
 
   This should be set to a function that will be executed periodically. Whenever this is executed, you can assume that your bot is authorized to interact with the Tinder API on behalf of your Facebook profile. Typically you would call methods from the [tinderjs](https://github.com/alkawryk/tinderjs) module to interact with the API.
     
+### .mainLoopInterval
+
+  The interval in milliseconds at which the mainLoop is executed.
+    
 ### .port
 
   Your bot wraps a simple express server. This will be the port the server listens on.
   
-### .mainLoopInterval
+### .client
 
-  The interval in milliseconds at which the mainLoop is executed.
+  This is the authorized tinder client you can use to interact with the tinder API
   
 ### .live()
 
