@@ -1,32 +1,77 @@
 var express = require('express');
 var tinder = require('tinderjs').TinderClient;
 
-function TinderBot()
-{
+/**
+ * Initializes a new instance of the TinderBot class 
+ */
+function TinderBot() {
+  
+  /**
+   * When the current facebook token expires 
+   */
   var fbTokenExpiresIn = null;
+  
+  /**
+   * The current express server associated with this bot 
+   */
   var app = express();
   var client = new tinder();
   var _this = this;
+  var server = null;
   
+  /**
+   * The amount of time, in milliseconds, between executing the mainLoop function
+   */
   this.mainLoopInterval = 5000;
   
-  this.mainLoop = function() {
-    console.log("Now ... ");
-  };
+  /**
+   * The function to be executed repeatedly after each timeout 
+   */
+  this.mainLoop = function() { };
   
+  /**
+   * The Facebook app ID from which user tokens will be generated 
+   */
   this.FBClientId = "850623398305311";
   
+  /**
+   * The port on which the express server will listen on 
+   */
   this.port = "8080";
+  
+  /**
+   * Starts the express server 
+   */
+  this.live = function() {
+    server = app.listen(this.port);
+  };
+  
+  /**
+   * Closes the express server 
+   */
+  this.die = function(){
+    if (server) {
+      server.close();
+    }
+  };
   
   app.use(express.bodyParser());
   app.set('views', __dirname + '/views');
   app.set('view options', { layout: false });
   app.set('view engine', 'jade');
   
+  /**
+   * Renders the page for when a user has been authenticated by Facebook 
+   */
   app.get('/fbtoken', function(req, res){
     res.render("auth");
   });
   
+  /**
+   * Since the Facebook access_token is only available in the browser URL fragment,
+   * it is not available server-side so we need to post it to the server from the browser.
+   * This is the entry point for persisting that token  
+   */
   app.post('/fbtoken', function(req, res){
     var hash = req.body.hash;
     var tokenField = "access_token=";
@@ -36,6 +81,8 @@ function TinderBot()
     
     fbTokenExpiresIn = new Date(new Date().getTime() + expiryInSeconds * 1000);
     
+    // Once we have the Facebook access token, we can use it to authorize our bot 
+    // to start issuing requests to the Tinder API 
     client.authorize(access_token, function(){
       
       var timer = setInterval(function(){
@@ -53,17 +100,17 @@ function TinderBot()
         }
       }, _this.mainLoopInterval);
       
-      res.redirect("/main");
-      
     });
     
   });
   
+  /**
+   * Entry point for getting the Facebook access token. This will bring you to a Facebook auth
+   * dialogue and eventually grant your access token
+   */
   app.get('/login', function(req, res){
     res.redirect('https://www.facebook.com/dialog/oauth?client_id=' + _this.FBClientId + '&response_type=token&redirect_uri=http://localhost:' + _this.port + '/fbtoken');
   });
-  
-  app.listen(this.port);
 }
 
-var bot = new TinderBot();
+module.exports = TinderBot;
