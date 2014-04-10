@@ -1,0 +1,23 @@
+{
+  "name": "tinderbot",
+  "version": "0.8.0",
+  "description": "A platform for developing bots that interact with the Tinder dating app",
+  "main": "tinderbot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alkawryk/tinderbot.git"
+  },
+  "author": "alkawryk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alkawryk/tinderbot/issues"
+  },
+  "homepage": "https://github.com/alkawryk/tinderbot",
+  "dependencies" : {
+    "express" : "4.0.0",
+    "tinderjs" : "1.0.3"
+  }
+}
