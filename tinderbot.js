@@ -32,7 +32,7 @@ function TinderBot() {
   /**
    * The Facebook app ID from which user tokens will be generated 
    */
-  this.FBClientId = "850623398305311";
+  this.FBClientId = null;
   
   /**
    * The port on which the express server will listen on 
