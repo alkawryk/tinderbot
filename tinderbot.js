@@ -15,7 +15,6 @@ function TinderBot() {
    * The current express server associated with this bot 
    */
   var app = express();
-  var client = new tinder();
   var _this = this;
   var server = null;
   
@@ -38,6 +37,11 @@ function TinderBot() {
    * The port on which the express server will listen on 
    */
   this.port = "8080";
+  
+  /**
+   * The client you can use to issue requests to tinder 
+   */
+  this.client = new tinder();
   
   /**
    * Starts the express server 
@@ -83,7 +87,7 @@ function TinderBot() {
     
     // Once we have the Facebook access token, we can use it to authorize our bot 
     // to start issuing requests to the Tinder API 
-    client.authorize(access_token, function(){
+    _this.client.authorize(access_token, function(){
       
       var timer = setInterval(function(){
         if (new Date().getTime() >= fbTokenExpiresIn.getTime()) {
