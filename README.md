@@ -10,7 +10,7 @@
   
   Below is a simple bot which periodically 'likes' all matches nearby and tells them to play Castle Clash.
   
-  var tinderbot = require('tinderbot');
+    var tinderbot = require('tinderbot');
     var bot = new tinderbot();
     var _ = require('underscore')
     
@@ -39,94 +39,60 @@
     
 ## Setup 
 
+### Create a Facebook application
 
-
-## Supported APIs
-
-### .authorize(fb token, callback)
-
-  Authorizes the `TinderClient`. You must call this before any other method.
+  This won't need to be approved, nor publicly available. Visit [the Facebook developer center](https://developers.facebook.com/) and select "Apps > Create a New App".
+  Give it a name (I named mine "TinderBot") and a category (e.g "Communication").
   
-* `fb token` is a facebook user access token. You would acquire this by having your user log in using your application 
-* `callback` is called when the request completes 
+### Authorize localhost as a Valid OAuth redirect URI 
 
-### .sendMessage(user id, message, callback)
+  Once your app has been created, follow the Settings link in the app's dashboard, and go over to the Advanced tab. Look for "Valid OAuth redirect URI's" and add `http://localhost:8080` (or whatever you decide to use for your listen port)
 
-  Sends a message to a user. 
+### Setting up your tinder bot 
   
-* `user id` is the user's id. This is obtained e.g via `getRecommendations` 
-* `message` is the message to send. 
-* `callback` is called when the request completes 
-
-### .like(user id, callback)
+  Copy your app's App Id from the main dashboard for your app. Then, create a new .js (e.g bot.js) file with the following contents:
   
-  Likes a user (swipes right).
-  
-* `user id` is the user's id. This is obtained e.g  via `getRecommendations`
-* `callback` is called when the request completes 
-
-### .pass(user id, callback)
-
-  Pass on a user (swipes left).
-  
-* `user id` is the user's id. This is obtained e.g  via `getRecommendations`
-* `callback` is called when the request completes 
-
-### .getRecommendations(limit, callback)
-
-  Gets nearby users
-  
-* `limit` is how many results to limit the search to 
-* `callback` is called when the request completes 
-
-### .getUpdates(callback)
-
-  Checks for updates. The response will show you new messages, new matches, new blocks, etc. 
-  
-* `callback` is called when the request completes 
-
-### .getHistory(callback)
-
-  Gets the complete history for the user (all matches, messages, blocks, etc.).
-  
-  NOTE: Old messages seem to not be returned after a certain threshold. Not yet sure what exactly that timeout is. The official client seems to get this update once when the app is installed then cache the results and only rely on the incremental updates
-
-* `callback` is called when the request completes 
-
-### .updatePosition(longitude, latitude, callback)
-
-  Updates your profile's geographic position
-
-* `longitude` is the longitude of the new position
-* `latitude` is the latitude of the new position
-* `callback` is called when the request completes 
-
-
-## Examples
-
-  The following example authorizes a client, gets some nearby profiles, likes all of them, and sends a message to any of the ones that match
-  
-    var tinder = require('tinderjs');
-    var client = new tinder.TinderClient();
-    var _ = require('underscore')
+    var tinderbot = require('tinderbot');
+    var bot = new tinderbot();
     
-    client.authorize(
-      <fb user token>,
-      function() {
-        client.getRecommendations(10, function(error, data){
-          _.chain(data.results)
-            .pluck('_id')
-            .each(function(id) {
-              client.like(id, function(error, data) {
-                if (data.matched) {
-                  client.sendMessage(id, "hey ;)");
-                }
-              });
-            });
-        });
-      });
-    });
+    bot.FBClientId = <app id>
     
+    bot.mainLoop = function() {
+      console.log("Hello world!");
+    };
+    
+    bot.live();
+    
+### Running the bot 
+
+  In a console, execute 
+  
+    $ node bot.js
+    
+  To authorize your bot to act on behalf of your Facebook profile, open up a browser and visit `http://localhost:8080/login`. You should be prompted for your Facebook credentials. Once logged in, look back at the console and notice the periodic "Hello world" logs. Congratulations, you've just created your first Tinder bot!
+
+## Configuration
+
+### .mainLoop
+
+  This should be set to a function that will be executed periodically. Whenever this is executed, you can assume that your bot is authorized to interact with the Tinder API on behalf of your Facebook profile. Typically you would call methods from the [tinderjs](https://github.com/alkawryk/tinderjs) module to interact with the API.
+    
+### .port
+
+  Your bot wraps a simple express server. This will be the port the server listens on.
+  
+### .mainLoopInterval
+
+  The interval in milliseconds at which the mainLoop is executed.
+  
+### .live()
+
+  This starts the express server.
+  
+### .die()
+
+  This kills the express server.
+  
 ## License
 
   MIT
