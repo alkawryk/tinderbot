@@ -1,6 +1,6 @@
 {
   "name": "tinderbot",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "A platform for developing bots that interact with the Tinder dating app",
   "main": "tinderbot.js",
   "scripts": {
