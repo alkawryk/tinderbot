@@ -18,6 +18,7 @@
   "homepage": "https://github.com/alkawryk/tinderbot",
   "dependencies" : {
     "express" : "4.0.0",
-    "tinderjs" : "1.0.3"
+    "tinderjs" : "1.0.4",
+    "bodyParser" : "1.0.1"
   }
 }

@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var tinder = require('tinderjs').TinderClient;
 
 /**
@@ -59,7 +60,7 @@ function TinderBot() {
     }
   };
   
-  app.use(express.bodyParser());
+  app.use(bodyParser());
   app.set('views', __dirname + '/views');
   app.set('view options', { layout: false });
   app.set('view engine', 'jade');
@@ -88,6 +89,8 @@ function TinderBot() {
     // Once we have the Facebook access token, we can use it to authorize our bot 
     // to start issuing requests to the Tinder API 
     _this.client.authorize(access_token, function(){
+      
+      res.status(200);
       
       var timer = setInterval(function(){
         if (new Date().getTime() >= fbTokenExpiresIn.getTime()) {
