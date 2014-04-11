@@ -46,7 +46,7 @@
   
 ### Authorize localhost as a Valid OAuth redirect URI 
 
-  Once your app has been created, follow the Settings link in the app's dashboard, and go over to the Advanced tab. Look for "Valid OAuth redirect URI's" and add `http://localhost:8080` (or whatever you decide to use for your listen port)
+  Once your app has been created, follow the Settings link in the app's dashboard, and go over to the Advanced tab. Look for "Valid OAuth redirect URI's" and add `http://localhost:8080/fbtoken` (or whatever you decide to use for your listen port). Also ensure the "Client OAuth Login" setting is enabled. 
 
 ### Setting up your tinder bot 
   
