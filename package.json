@@ -1,6 +1,6 @@
 {
   "name": "tinderbot",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "A platform for developing bots that interact with the Tinder dating app",
   "main": "tinderbot.js",
   "scripts": {
@@ -18,7 +18,8 @@
   "homepage": "https://github.com/alkawryk/tinderbot",
   "dependencies" : {
     "express" : "4.0.0",
-    "tinderjs" : "1.0.5",
-    "body-parser" : "1.0.1"
+    "tinderjs" : "1.0.6",
+    "body-parser" : "1.0.1",
+    "request" : "2.34.0"
   }
 }

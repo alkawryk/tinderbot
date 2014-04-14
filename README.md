@@ -56,6 +56,7 @@
     var bot = new tinderbot();
     
     bot.FBClientId = <app id>
+    bot.FBClientSecret = <app secret>
     
     bot.mainLoop = function() {
       console.log("Hello world!");

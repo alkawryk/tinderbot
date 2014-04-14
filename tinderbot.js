@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var tinder = require('tinderjs').TinderClient;
+var request = require('request');
 
 /**
  * Initializes a new instance of the TinderBot class 
@@ -33,6 +34,11 @@ function TinderBot() {
    * The Facebook app ID from which user tokens will be generated 
    */
   this.FBClientId = null;
+  
+  /**
+   * The Facebook app secret
+   */
+  this.FBClientSecret = null;
   
   /**
    * The port on which the express server will listen on 
@@ -86,29 +92,45 @@ function TinderBot() {
     
     fbTokenExpiresIn = new Date(new Date().getTime() + expiryInSeconds * 1000);
     
-    // Once we have the Facebook access token, we can use it to authorize our bot 
-    // to start issuing requests to the Tinder API 
-    _this.client.authorize(access_token, function(){
+    // Once we have the Facebook access token, we need the user ID associated with the token.
+    request({
+      url: 'https://graph.facebook.com/debug_token?input_token=' + access_token + '&access_token=' + _this.FBClientId + '|' + _this.FBClientSecret,
+      method: 'GET'
+    }, function(err, response, body){
       
-      res.status(200);
-      
-      var timer = setInterval(function(){
-        if (new Date().getTime() >= fbTokenExpiresIn.getTime()) {
-          
-          clearInterval(timer);
-          res.redirect('/login');
-          
-        } else {
-          
-          if (_this.mainLoop) {
-            _this.mainLoop();
-          }
-          
+      if (err) {
+        throw new "Failed to get user id: " + err;
+      } else {
+        
+        body = JSON.parse(body);
+        
+        if (!body.data.user_id) {
+          throw new "Failed to get user id.";
         }
-      }, _this.mainLoopInterval);
-      
+        
+        // Once we have the Facebook access token and user id, we can use it to authorize our bot 
+        // to start issuing requests to the Tinder API 
+        _this.client.authorize(access_token, body.data.user_id, function(){
+          
+          res.status(200);
+          
+          var timer = setInterval(function(){
+            if (new Date().getTime() >= fbTokenExpiresIn.getTime()) {
+              
+              clearInterval(timer);
+              res.redirect('/login');
+              
+            } else {
+              
+              if (_this.mainLoop) {
+                _this.mainLoop();
+              }
+              
+            }
+          }, _this.mainLoopInterval); 
+        }); 
+      }
     });
-    
   });
   
   /**
