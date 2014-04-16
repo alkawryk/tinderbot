@@ -112,13 +112,16 @@ function TinderBot() {
         // to start issuing requests to the Tinder API 
         _this.client.authorize(access_token, body.data.user_id, function(){
           
-          res.status(200);
-          
           var timer = setInterval(function(){
             if (new Date().getTime() >= fbTokenExpiresIn.getTime()) {
               
               clearInterval(timer);
-              res.redirect('/login');
+              
+              // Have the client refresh their screen to obtain
+              // a new Facebook client token 
+              res.json({
+                redirect: '/login'
+              });
               
             } else {
               

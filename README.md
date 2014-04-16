@@ -70,7 +70,8 @@
   
     $ node bot.js
     
-  To authorize your bot to act on behalf of your Facebook profile, open up a browser and visit `http://localhost:8080/login`. You should be prompted for your Facebook credentials. Once logged in, look back at the console and notice the periodic "Hello world" logs. Congratulations, you've just created your first Tinder bot!
+  To authorize your bot to act on behalf of your Facebook profile, open up a browser and visit `http://localhost:8080/login`. You should be prompted for your Facebook credentials. Once logged in, look back at the console and notice the periodic "Hello world" logs. Congratulations, you've just created your first Tinder bot! 
+  Make sure you keep this window open if you're planning on running your bot for a long time (ie more than an hour or so), as it will automatically refresh when your Facebook tokens have expired. 
 
 ## Configuration
 

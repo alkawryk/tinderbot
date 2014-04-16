@@ -9,6 +9,11 @@ html(lang="en")
           url: '/fbtoken',
           data: {
             hash : window.location.hash.substring(1)
+          },
+          success : function(res) {
+            if (res.redirect) {
+              window.location = res.redirect;
+            }
           }
         });
       });
