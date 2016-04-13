@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var tinder = require('tinderjs').TinderClient;
+var tinder = require('tinder').TinderClient;
 var request = require('request');
 
 /**
